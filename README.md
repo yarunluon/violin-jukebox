@@ -1,49 +1,58 @@
-# violin-jukebox
-Violin Jukebox project
+# Violin Jukebox project
+The violin jukebox is a capacitive enabled instrument. When the electrical field around the violin is disturbed, it sends a signal to the microcontroller to play a song. The microcontroller outputs the song into a vibrating speaker attached to the back of the violin. The vibrarion of the speakers is amplified by the violin's natural acoustic body.The jukebox cycles through every song in random order before repeating songs.
 
-# Visual Studio Code
-_Installation_
 
+# Requirements
+1. Python3
+1. Raspberry Pi
+1. Violin
+1. Capacitive touch sensor
+1. Vibrating speaker
+1. Violan stand
+
+
+# Requirements
+1. Python3
+
+# Installation
+## Visual Studio Code
 https://pimylifeup.com/raspberry-pi-visual-studio-code/
 
-## Install this version
+### Install this version
 ```sh
 sudo apt-get install code-oss=1.29.0-1539702286
 ```
 
-## Lock the version
+### Lock the version
 ```sh
 sudo apt-mark hold code-oss
 ```
 
-## Unlock the version
+### Unlock the version
 ```sh
 sudo apt-mark unhold code-oss
 ```
 
-# Vim
+## Vim
 ```sh
 sudo apt-get install vim
 ```
 
-# Neovim
+## Neovim
 _Has display problems. Use Vim instead._
 https://wilkins.tech/posts/neovim-raspberry-pi/
 
-# Adafruit Touchsensor library
+## Adafruit Touchsensor library
 1. https://learn.adafruit.com/circuitpython-on-raspberrypi-linux
 1. https://learn.adafruit.com/capacitive-touch-sensors-on-the-raspberry-pi/programming
 
-# Adafruit circuitpython library
+## Adafruit circuitpython library
 ```sh
 sudo pip3 install adafruit-blinka
 ```
 
-# Install Adafruit libraries
+## Install Adafruit libraries
 https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
-
-# Requirements
-- Python3
 
 
 # Usage
@@ -62,6 +71,38 @@ sudo vim /etc/rc.local
 ### Add this line
 ```sh
   sudo python3 /path/to/violin-jukebox/jukebox.py &
+```
+
+# Setup using either GPIO or Adafruit library
+
+## Directly using GPIO library
+```py
+import RPi.GPIO as GPIO
+
+# GPIO Pin. Not Broadcom pin
+GPIO_INPUT_PIN = 40
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(GPIO_INPUT_PIN, GPIO.IN)
+
+value = GPIO.input(GPIO_INPUT_PIN)
+if value == 1:
+  # Do something
+```
+
+## Directly using Adafruit library
+```py
+import board
+from digitalio import DigitalInOut, Direction
+
+# Uses DCOM pin. Not the GPIO pin
+pad_pin = board.D21
+pad = DigitalInOut(pad_pin)
+pad.direction = Direction.INPUT
+
+while True:
+  if pad.value:
+    # Do something
 ```
 
 # Raspberry PIN Setup
@@ -91,18 +132,3 @@ sudo vim /etc/rc.local
   [ Ethernet ]  [ USB Bank ] [ USB Bank ]
 ```
 
-
-# Directly using GPIO library
-```py
-import RPi.GPIO as GPIO
-
-# GPIO Pin. Not Broadcom pin
-GPIO_INPUT_PIN = 40
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(GPIO_INPUT_PIN, GPIO.IN)
-
-value = GPIO.input(GPIO_INPUT_PIN)
-if value == 1:
-  # Do something
-```
