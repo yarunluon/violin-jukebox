@@ -40,3 +40,51 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 
 # Requirements
 - Python3
+
+
+# Usage
+## To run via command-line
+```py
+python3 jukebox.py
+```
+
+## To run at startup.
+
+### Open `rc.local`
+```sh
+sudo vim /etc/rc.local
+```
+
+### Add this line
+```sh
+  sudo python3 /path/to/violin-jukebox/jukebox.py &
+```
+
+# Raspbeery PIN Setup
+```
+# All pings are on the right side of GPIO board
+    0  0 <- Red (Power v5.5). However any power pin will work
+    0  0
+    0  0 <- Black (Ground). However any ground pin will work
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0
+    0  0 <- Green (GPIO 40). Output must go in pin 40 or change in codebase.
+
+  [ Ethernet ]  [ USB Bank ] [ USB Bank ]
+```
+
+
