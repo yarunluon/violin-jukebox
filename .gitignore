@@ -3,3 +3,4 @@ songs/
 __pycache__/
 *.code-workspace
 *.swp
+.vscode
