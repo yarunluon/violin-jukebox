@@ -10,10 +10,6 @@ The violin jukebox is a capacitive enabled instrument. When the electrical field
 1. Vibrating speaker
 1. Violan stand
 
-
-# Requirements
-1. Python3
-
 # Installation
 ## Visual Studio Code
 https://pimylifeup.com/raspberry-pi-visual-studio-code/
