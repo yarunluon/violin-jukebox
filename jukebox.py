@@ -12,10 +12,16 @@ from digitalio import DigitalInOut, Direction
 # Constants
 SONGS_DIR = '/home/pi/repos/violin-jukebox/songs'
 OMXPLAYER_QUIT = 'q'.encode('utf-8')
-SONG_DURATION = 22
-PLAYLIST = tuple(os.listdir(SONGS_DIR))
+MASTER_PLAYLIST = tuple(os.listdir(SONGS_DIR))
+
+# Volume controls
 VOLUME_MAX = 200
 VOLUME_NORMAL = 0
+
+# Measured in seconds
+SONG_BUFFER = 2
+SONG_DURATION = 20
+TOTAL_SONG_DURATION = SONG_DURATION + SONG_BUFFER
 
 # Uses Adafruit method. Alternative is directly use GPIO inputs
 pad_pin = board.D21
@@ -34,19 +40,21 @@ def play(song_name):
   command = "omxplayer --vol {volume} -o local '{filename}'".format(volume=VOLUME_NORMAL, filename=filename)
   print("Command: {command}".format(command=command))
   p = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE)
-  time.sleep(SONG_DURATION)
+  time.sleep(TOTAL_SONG_DURATION)
   p.communicate(input=OMXPLAYER_QUIT)
 
-print_playlist(PLAYLIST)
+print_playlist(MASTER_PLAYLIST)
 
 while True:
   if pad.value:
     print("pad touched. playing song")
 
     if not playlist:
-      playlist = list(PLAYLIST[:])
+      # Playlist is empty. Repopulate and shuffle it from the master playlist
+      playlist = list(MASTER_PLAYLIST[:])
       random.shuffle(playlist)
 
+    # Take the next song from the playlist. Sample without replacement.
     song_name = playlist.pop()
     play(song_name)
 
