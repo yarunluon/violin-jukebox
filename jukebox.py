@@ -10,14 +10,18 @@ import board, time, os, random, subprocess
 from digitalio import DigitalInOut, Direction
 from threading import Timer
 
+# Modes
+MODE_SONG_STOPPABLE = "stoppable"
+MODE_SONG_UNSTOPPABLE = "unstoppable"
+
 # Constants
 SONGS_DIR = "/home/pi/repos/violin-jukebox/songs"
 OMXPLAYER_QUIT = "q".encode("utf-8")
 MASTER_PLAYLIST = tuple(os.listdir(SONGS_DIR))
 
-# Modes
-MODE_PLAYING = "playing"
-MODE_WAITING = "waiting"
+# States
+STATE_PLAYING = "playing"
+STATE_WAITING = "waiting"
 
 # Volume controls
 VOLUME_MAX = 200
@@ -37,21 +41,21 @@ pad.direction = Direction.INPUT
 
 # Setup global variables
 playlist = []
-mode = MODE_WAITING
+state = STATE_WAITING
 
-def set_mode(next_mode):
-  print("Setting mode from '{mode}' to '{next_mode}'".format(mode=mode, next_mode=next_mode))
-  global mode
-  mode = next_mode
+def set_state(next_state):
+  print("Setting state from '{state}' to '{next_state}'".format(state=state, next_state=next_state))
+  global state
+  state = next_state
 
-def stop_playing(song_process, next_mode):
+def stop_playing(song_process, next_state):
   if song_process.poll() is None:
     print("stopping process now")
     song_process.communicate(input=OMXPLAYER_QUIT)
   else:
     print("process is already stopped. Doing nothing")
 
-  set_mode(next_mode)
+  set_state(next_state)
 
 def print_playlist(playlist):
   print("[ PLAYLIST ] [ PLAYLIST ] [ PLAYLIST ] [ PLAYLIST ]")
@@ -70,7 +74,7 @@ time.sleep(STARTUP_DURATION)
 # Main program
 while True:
   if pad.value:
-    if mode == MODE_WAITING:
+    if state == STATE_WAITING:
       if not playlist:
         # Playlist is empty. Repopulate and shuffle it from the master playlist
         playlist = list(MASTER_PLAYLIST[:])
@@ -89,12 +93,12 @@ while True:
       song_process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE)
 
       # Start timer to kill the song
-      stop_timer = Timer(TOTAL_SONG_DURATION, stop_playing, kwargs= { "song_process": song_process, "next_mode": MODE_WAITING })
+      stop_timer = Timer(TOTAL_SONG_DURATION, stop_playing, kwargs= { "song_process": song_process, "next_state": STATE_WAITING })
       stop_timer.start()
 
-      set_mode(MODE_PLAYING)
-    elif mode == MODE_PLAYING:
+      set_state(STATE_PLAYING)
+    elif state == STATE_PLAYING:
       stop_timer.cancel()
-      stop_playing(song_process, MODE_WAITING)
+      stop_playing(song_process, STATE_WAITING)
 
     time.sleep(TOUCH_TIMEOUT)
