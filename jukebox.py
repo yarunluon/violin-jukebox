@@ -26,6 +26,7 @@ VOLUME_NORMAL = 0
 # Measured in seconds
 SONG_BUFFER = 2
 SONG_DURATION = 20
+STARTUP_DURATION = 4
 TOTAL_SONG_DURATION = SONG_DURATION + SONG_BUFFER
 TOUCH_TIMEOUT = 2
 
@@ -60,6 +61,13 @@ def print_playlist(playlist):
 
 print_playlist(MASTER_PLAYLIST)
 
+# Play the startup sound indicating the program is ready
+startup_command = "omxplayer --vol {volume} -o local '{filename}'".format(volume=VOLUME_NORMAL, filename='startup.wav')
+print("Command: {command}".format(command=startup_command))
+startup_process = subprocess.Popen(startup_command, shell=True, stdin=subprocess.PIPE)
+time.sleep(STARTUP_DURATION)
+
+# Main program
 while True:
   if pad.value:
     if mode == MODE_WAITING:
