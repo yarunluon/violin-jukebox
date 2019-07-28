@@ -105,27 +105,28 @@ while True:
 
 # Raspberry PIN Setup
 ```
-# All pings are on the right side of GPIO board
-    0  0 <- Red (Power v5.5). However any power pin will work
-    0  0
-    0  0 <- Black (Ground). However any ground pin will work
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0
-    0  0 <- Green (GPIO 40). Output must go in pin 40 or change in codebase.
+# All pins are on the right side of GPIO board
+# Any power or ground pins will work
+                                    0  0 <- Red (Power v5.5)
+                                    0  0
+                                    0  0 <- Black (Ground)
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0
+                                    0  0 <- Green (GPIO 40). Output must go in pin 40 or else change in codebase.
 
   [ Ethernet ]  [ USB Bank ] [ USB Bank ]
 ```
