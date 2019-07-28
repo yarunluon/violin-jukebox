@@ -15,7 +15,9 @@ MODE_SONG_STOPPABLE = "stoppable"
 MODE_SONG_UNSTOPPABLE = "unstoppable"
 
 # Constants
-SONGS_DIR = "/home/pi/repos/violin-jukebox/songs"
+STARTUP_SOUND = "startup.wav"
+ROOT_DIR = "/home/pi/repos/violin-jukebox/"
+SONGS_DIR = ROOT_DIR + "songs"
 OMXPLAYER_QUIT = "q".encode("utf-8")
 MASTER_PLAYLIST = tuple(os.listdir(SONGS_DIR))
 
@@ -67,7 +69,8 @@ mode = MODE_SONG_UNSTOPPABLE
 print_playlist(MASTER_PLAYLIST)
 
 # Play the startup sound indicating the program is ready
-startup_command = "omxplayer --vol {volume} -o local '{filename}'".format(volume=VOLUME_NORMAL, filename='startup.wav')
+filename = ROOT_DIR + STARTUP_SOUND
+startup_command = "omxplayer --vol {volume} -o local '{filename}'".format(volume=VOLUME_NORMAL, filename=filename)
 print("Command: {command}".format(command=startup_command))
 startup_process = subprocess.Popen(startup_command, shell=True, stdin=subprocess.PIPE)
 time.sleep(STARTUP_DURATION)
