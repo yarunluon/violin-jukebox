@@ -63,6 +63,7 @@ def print_playlist(playlist):
     print("{song_num}: {song_name}".format(song_num=index+1, song_name=playlist[index]))
   print("♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪")
 
+mode = MODE_SONG_UNSTOPPABLE
 print_playlist(MASTER_PLAYLIST)
 
 # Play the startup sound indicating the program is ready
@@ -98,7 +99,8 @@ while True:
 
       set_state(STATE_PLAYING)
     elif state == STATE_PLAYING:
-      stop_timer.cancel()
-      stop_playing(song_process, STATE_WAITING)
+      if mode == MODE_SONG_STOPPABLE:
+        stop_timer.cancel()
+        stop_playing(song_process, STATE_WAITING)
 
     time.sleep(TOUCH_TIMEOUT)
