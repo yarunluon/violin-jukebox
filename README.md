@@ -12,9 +12,11 @@ The violin jukebox is a capacitive enabled instrument. When the electrical field
 
 # Installation
 ## Visual Studio Code
+Need to install a Raspberry Pi build of vs-code
 https://pimylifeup.com/raspberry-pi-visual-studio-code/
 
 ### Install this version
+Need to install the gpg keys before installing this specific version. Might be easier to first install the most recent version and then downgrade.
 ```sh
 sudo apt-get install code-oss=1.29.0-1539702286
 ```
