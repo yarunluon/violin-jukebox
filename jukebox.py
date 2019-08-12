@@ -2,7 +2,12 @@
 Violin jukebox
 
 Plays a random song when the violin is touched. Songs do not repeat until they've been all
-cycled through. Touching the violin again stops the song.
+cycled through.
+
+There are two modes that can be set.
+    1. `MODE_SONG_STOPPABLE` which lets the user stop the current song to play another song.
+    2. `MODE_SONG_UNSTOPPABLE` which plays the song the entire way through without stopping.
+
 yarun.luon@gmail.com
 """
 
@@ -45,6 +50,7 @@ pad.direction = Direction.INPUT
 playlist = []
 state = STATE_WAITING
 
+# Helper functions
 def set_state(next_state):
   print("Setting state from '{state}' to '{next_state}'".format(state=state, next_state=next_state))
   global state
@@ -65,6 +71,7 @@ def print_playlist(playlist):
     print("{song_num}: {song_name}".format(song_num=index+1, song_name=playlist[index]))
   print("♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪♫♪.ılılıll|̲̅̅●̲̅̅|̲̅̅=̲̅̅|̲̅̅●̲̅̅|llılılı.♫♪")
 
+# Start program
 mode = MODE_SONG_UNSTOPPABLE
 print_playlist(MASTER_PLAYLIST)
 

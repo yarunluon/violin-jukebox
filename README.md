@@ -4,42 +4,13 @@ The violin jukebox is a capacitive enabled instrument. When the electrical field
 
 # Requirements
 1. Python3
-1. Raspberry Pi
+1. Raspberry Pi 3
 1. Violin
-1. Capacitive touch sensor
+1. [Capacitive touch sensor](https://www.adafruit.com/product/1374)
 1. Vibrating speaker
 1. Violan stand
 
-# Installation
-## Visual Studio Code
-Need to install a Raspberry Pi build of vs-code
-https://pimylifeup.com/raspberry-pi-visual-studio-code/
-
-### Install this version
-Need to install the gpg keys before installing this specific version. Might be easier to first install the most recent version and then downgrade.
-```sh
-sudo apt-get install code-oss=1.29.0-1539702286
-```
-
-### Lock the version
-```sh
-sudo apt-mark hold code-oss
-```
-
-### Unlock the version
-```sh
-sudo apt-mark unhold code-oss
-```
-
-## Vim
-```sh
-sudo apt-get install vim
-```
-
-## Neovim
-_Has display problems. Use Vim instead._
-https://wilkins.tech/posts/neovim-raspberry-pi/
-
+# Driver installation
 ## Adafruit Touchsensor library
 1. https://learn.adafruit.com/circuitpython-on-raspberrypi-linux
 1. https://learn.adafruit.com/capacitive-touch-sensors-on-the-raspberry-pi/programming
@@ -59,19 +30,18 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 python3 jukebox.py
 ```
 
-## To run at startup.
+## To run at startup
+1. Open `rc.local`
+    ```sh
+    sudo vim /etc/rc.local
+    ```
 
-### Open `rc.local`
-```sh
-sudo vim /etc/rc.local
-```
+1. Add this line to the end of the file
+    ```sh
+    sudo python3 /path/to/violin-jukebox/jukebox.py &
+    ```
 
-### Add this line
-```sh
-  sudo python3 /path/to/violin-jukebox/jukebox.py &
-```
-
-# Setup using either GPIO or Adafruit library
+# Implement using either GPIO or Adafruit library
 
 ## Directly using GPIO library
 ```py
@@ -126,8 +96,46 @@ while True:
                                     0  0
                                     0  0
                                     0  0
-                                    0  0 <- Green (GPIO 40). Output must go in pin 40 or else change in codebase.
+                                    0  0 <- Green (GPIO 40). Update the code if not using pin 40.
 
   [ Ethernet ]  [ USB Bank ] [ USB Bank ]
 ```
+# Physical setup
+## Input
+1. Attach an antenna to the touch sensor by soldering a wire to the pinhole.
+1. Attach the wire antenna to the string of the violin under the bridge.
+1. Attach the pins of the touch sensor to the raspberry according to the pin diagram
 
+## Output
+1. Plug an 1/8" audio cord from the raspberry pi to the aux in of the vibration speaker
+1. Attach the speaker to the flat portion on the back of the violin
+
+# Tools
+## Visual Studio Code
+Need to install a Raspberry Pi build of vs-code
+https://pimylifeup.com/raspberry-pi-visual-studio-code/
+
+### Install this version
+Need to install the gpg keys before installing this specific version. Might be easier to first install the most recent version and then downgrade.
+```sh
+sudo apt-get install code-oss=1.29.0-1539702286
+```
+
+### Lock the version
+```sh
+sudo apt-mark hold code-oss
+```
+
+### Unlock the version
+```sh
+sudo apt-mark unhold code-oss
+```
+
+## Vim
+```sh
+sudo apt-get install vim
+```
+
+## Neovim
+_Has display problems. Use Vim instead._
+https://wilkins.tech/posts/neovim-raspberry-pi/
